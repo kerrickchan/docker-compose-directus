@@ -1,0 +1,35 @@
+version: '3.8'
+
+name: directus
+
+services:
+  postgis:
+    extends:
+      file: ./docker-compose-postgis.yml
+      service: postgis
+    ports:
+      - 5432:5432
+
+  adminer:
+    extends:
+      file: ./docker-compose-postgis.yml
+      service: adminer
+  
+  redis:
+    extends:
+      file: ./docker-compose-redis.yml
+      service: redis
+  
+  directus:
+    extends:
+      file: ./docker-compose-directus.yml
+      service: directus
+    depends_on:
+      postgis:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgis_data:
+  redis_data:

@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  directus:
+    image: directus/directus:10.8.2
+    ports:
+      - 8055:8055
+    volumes:
+      - ./uploads:/directus/uploads
+      # If you want to load extensions from the host
+      # - ./extensions:/directus/extensions
+    environment:
+      KEY: "6c22098d37f271b03bfd7fae70fc84a65afb6d8ff256de6d1051ea0bcd3e81e6474ed30c"
+      SECRET: "94ec38d354b0b6003b56bbf4573d3fc9b987760b33f2382259be963e226418011098f358"
+
+      DB_CLIENT: "pg"
+      DB_HOST: "postgis"
+      DB_PORT: "5432"
+      DB_DATABASE: "directus"
+      DB_USER: "directus"
+      DB_PASSWORD: "directus"
+
+      CACHE_ENABLED: "true"
+      CACHE_STORE: "redis"
+      REDIS: "redis://redis:6379"
+
+      ADMIN_EMAIL: "admin@example.com"
+      ADMIN_PASSWORD: "d1r3ctu5"
+
+      # Make sure to set this in production
+      # (see https://docs.directus.io/self-hosted/config-options#general)
+      # PUBLIC_URL: "https://directus.example.com"
