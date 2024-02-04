@@ -1,34 +1,22 @@
 version: '3.8'
 
 services:
-
   postgis:
     image: postgis/postgis:16-3.4-alpine
-    # Required when running on platform other than amd64, like Apple M1/M2:
-    platform: linux/amd64
     restart: unless-stopped
+    environment:
+      POSTGRES_USER: directus
+      POSTGRES_PASSWORD: directus
+      POSTGRES_DB: directus
+    expose:
+      - 5432
     volumes:
       - postgis_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: "directus"
-      POSTGRES_PASSWORD: "directus"
-      POSTGRES_DB: "directus"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U root"]
+      test: ["CMD-SHELL", "pg_isready -U directus"]
       interval: 5s
       timeout: 5s
       retries: 5
-
-  adminer:
-    image: adminer
-    restart: unless-stopped
-    environment:
-      - ADMINER_DEFAULT_SERVER=postgis
-    ports:
-      - 8080:8080
-    depends_on:
-      postgis:
-        condition: service_healthy
 
 volumes:
   postgis_data:
